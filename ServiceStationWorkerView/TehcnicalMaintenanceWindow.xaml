@@ -1,0 +1,55 @@
+﻿<Window x:Class="ServiceStationWorkerView.TehcnicalMaintenanceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServiceStationWorkerView"
+        Loaded="TechnicalMaintenanceWindow_Load"
+        mc:Ignorable="d"
+       Title="Формирование ТО" Height="460" Width="600" Icon="Images/icon.ico" ResizeMode="NoResize">
+    <StackPanel VerticalAlignment="Center">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Название" FontSize="14" Margin="10,5" FontFamily="{StaticResource General_fontFamily}"></Label>
+            <TextBox x:Name="textBoxTechnicalMaintenanceName" Grid.Row="0" Grid.Column="1" FontFamily="{StaticResource General_fontFamily}" FontSize="14" Margin="5,5,36,5"></TextBox>
+            <Label Grid.Row="1" Content="Сумма" FontSize="14" Margin="10,5" FontFamily="{StaticResource General_fontFamily}"></Label>
+            <TextBox x:Name="textBoxTechnicalMaintenanceSum" Grid.Row="1" Grid.Column="1" FontFamily="{StaticResource General_fontFamily}" FontSize="14" Margin="5,5,359,5" ></TextBox>
+        </Grid>
+        <GroupBox Header="Работы" Margin="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DataGrid x:Name="dataGridWorks" Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="false">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Visibility="Hidden" Binding="{Binding Path=Id}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Работа" Binding="{Binding Path=WorkName}" Width="0.5*"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Цена" Binding="{Binding Path=Price}" Width="0.5*"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Количество" Binding="{Binding Path=Count}" Width="0.5*"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                    <Button Content="Добавить" Style="{StaticResource General_button}" Margin="20" Click="ButtonAdd_Click"></Button>
+                    <Button Content="Изменить" Style="{StaticResource General_button}" Margin="20" Click="ButtonUpd_Click"></Button>
+                    <Button Content="Удалить" Style="{StaticResource General_button}" Margin="20" Click="ButtonDel_Click"></Button>
+                    <Button Content="Обновить" Style="{StaticResource General_button}" Margin="20" Click="ButtonRef_Click"></Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Сохранить" Width="80" Style="{StaticResource General_button}" Margin="10" Click="ButtonSave_Click"></Button>
+            <Button Content="Отмена" Width="80" Style="{StaticResource General_button}" Margin="10" Click="ButtonCancel_Click"></Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
