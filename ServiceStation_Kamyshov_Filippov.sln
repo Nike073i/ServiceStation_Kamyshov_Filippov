@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStationWorkerView", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStationDatabaseImplement", "ServiceStationDatabaseImplement\ServiceStationDatabaseImplement.csproj", "{21A6B501-709A-4BFB-A54F-370DAAB6724D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStationStorekeeperView", "ServiceStationStorekeeperView\ServiceStationStorekeeperView.csproj", "{FD7841E6-EA47-4E1E-9A81-170FF34FF63A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{21A6B501-709A-4BFB-A54F-370DAAB6724D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21A6B501-709A-4BFB-A54F-370DAAB6724D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A6B501-709A-4BFB-A54F-370DAAB6724D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD7841E6-EA47-4E1E-9A81-170FF34FF63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD7841E6-EA47-4E1E-9A81-170FF34FF63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD7841E6-EA47-4E1E-9A81-170FF34FF63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD7841E6-EA47-4E1E-9A81-170FF34FF63A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
