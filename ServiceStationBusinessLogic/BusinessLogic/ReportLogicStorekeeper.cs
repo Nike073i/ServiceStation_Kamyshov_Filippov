@@ -3,6 +3,7 @@ using ServiceStationBusinessLogic.HelperModels;
 using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ServiceStationBusinessLogic.BusinessLogic
 {
@@ -60,31 +61,11 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         {
             var technicalMaitenances = _technicalMaintenanceStorage.GetFullList();
             var neededTechnicalMaintenances = new List<TechnicalMaintenanceViewModel>();
-            foreach (var tm in technicalMaitenances)
+
+            foreach (var selectedWork in selectedWorks)
             {
-                bool technicalMaitenanceIsNeeded = false;
-                foreach (var work in tm.TechnicalMaintenanceWorks)
-                {
-                    if (technicalMaitenanceIsNeeded)
-                    {
-                        break;
-                    }
-                    foreach (var selectedWork in selectedWorks)
-                    {
-                        if (work.Key == selectedWork.Id)
-                        {
-                            technicalMaitenanceIsNeeded = true;
-                            break;
-                        }
-                    }
-                }
-                if (technicalMaitenanceIsNeeded)
-                {
-                    if (!neededTechnicalMaintenances.Contains(tm))
-                    {
-                        neededTechnicalMaintenances.Add(tm);
-                    }
-                }
+                var technicalMaintenanceBySelectedWork = technicalMaitenances.Where(rec => (rec.TechnicalMaintenanceWorks.ContainsKey(selectedWork.Id) && (!neededTechnicalMaintenances.Contains(rec))));
+                neededTechnicalMaintenances.AddRange(technicalMaintenanceBySelectedWork);
             }
             return neededTechnicalMaintenances;
         }
