@@ -10,5 +10,6 @@ namespace ServiceStationBusinessLogic.BindingModels
         public int UserId { get; set; }
         public Dictionary<int, string> TechnicalMaintenanceCars { get; set; }
         public Dictionary<int, (string, int)> TechnicalMaintenanceWorks { get; set; }
+        public List<int> SelectedWorks { get; set; }
     }
 }

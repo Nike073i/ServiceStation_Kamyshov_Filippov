@@ -21,53 +21,43 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         }
         private Dictionary<int, ReportCarWorkViewModel> GetCarWork(List<WorkViewModel> selectedWorks)
         {
-            var technicalMaintenance = GetTechnicalMaintenanceByWorks(selectedWorks);
+            var technicalMaintenances = _technicalMaintenanceStorage.GetFilteredList(new TechnicalMaintenanceBindingModel
+            {
+                SelectedWorks = selectedWorks.Select(rec => rec.Id)
+                .ToList()
+            });
             var record = new Dictionary<int, ReportCarWorkViewModel>();
-            foreach (var tm in technicalMaintenance)
+
+            technicalMaintenances.ForEach(rec =>
             {
-                foreach (var car in tm.TechnicalMaintenanceCars)
+                var cars = rec.TechnicalMaintenanceCars.ToList();
+                cars.Where(car => !record.ContainsKey(car.Key)).ToList()
+                .ForEach(car =>
                 {
-                    if (!record.ContainsKey(car.Key))
+                    record.Add(car.Key, new ReportCarWorkViewModel
                     {
-                        record.Add(car.Key, new ReportCarWorkViewModel
+                        CarName = car.Value,
+                        Works = new Dictionary<int, (string, decimal)>()
+                    });
+                });
+                var works = rec.TechnicalMaintenanceWorks
+                .Where(work => selectedWorks.FirstOrDefault(selectedWork => selectedWork.Id == work.Key) != null)
+                .ToList();
+                cars.ForEach(car =>
+                {
+                    works.Where(work => !record[car.Key].Works.ContainsKey(work.Key))
+                    .ToList()
+                    .ForEach(work =>
+                    {
+                        var workModel = _workStorage.GetElement(new WorkBindingModel
                         {
-                            CarName = car.Value,
-                            Works = new Dictionary<int, (string, decimal)>()
+                            Id = work.Key
                         });
-                    }
-                    foreach (var work in tm.TechnicalMaintenanceWorks)
-                    {
-                        foreach (var selectedWork in selectedWorks)
-                        {
-                            if (work.Key == selectedWork.Id)
-                            {
-                                if (!record[car.Key].Works.ContainsKey(work.Key))
-                                {
-                                    var workModel = _workStorage.GetElement(new WorkBindingModel
-                                    {
-                                        Id = work.Key
-                                    });
-                                    record[car.Key].Works.Add(work.Key, (work.Value.Item1, workModel != null ? workModel.Price : 0));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+                        record[car.Key].Works.Add(work.Key, (work.Value.Item1, workModel != null ? workModel.Price : 0));
+                    });
+                });
+            });
             return record;
-        }
-
-        private List<TechnicalMaintenanceViewModel> GetTechnicalMaintenanceByWorks(List<WorkViewModel> selectedWorks)
-        {
-            var technicalMaitenances = _technicalMaintenanceStorage.GetFullList();
-            var neededTechnicalMaintenances = new List<TechnicalMaintenanceViewModel>();
-
-            foreach (var selectedWork in selectedWorks)
-            {
-                var technicalMaintenanceBySelectedWork = technicalMaitenances.Where(rec => (rec.TechnicalMaintenanceWorks.ContainsKey(selectedWork.Id) && (!neededTechnicalMaintenances.Contains(rec))));
-                neededTechnicalMaintenances.AddRange(technicalMaintenanceBySelectedWork);
-            }
-            return neededTechnicalMaintenances;
         }
 
         // Получение списка запчастей с указанием работ и машин за определенный период
@@ -80,19 +70,19 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             });
 
             var sparePartWorkCar = new List<ReportSparePartsViewModel>();
-            foreach (var serviceRecording in serviceRecordings)
+            serviceRecordings.ForEach(serviceRecording =>
             {
-                var tm = _technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
+                var technicalMaintenances = _technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
                 {
                     Id = serviceRecording.TechnicalMaintenanceId
                 });
-                foreach (var technicalMaintenanceWork in tm.TechnicalMaintenanceWorks)
+                technicalMaintenances.TechnicalMaintenanceWorks.ToList().ForEach(technicalMaintenance =>
                 {
                     var work = _workStorage.GetElement(new WorkBindingModel
                     {
-                        Id = technicalMaintenanceWork.Key
+                        Id = technicalMaintenance.Key
                     });
-                    foreach (var sparePart in work.WorkSpareParts)
+                    work.WorkSpareParts.ToList().ForEach(sparePart =>
                     {
                         sparePartWorkCar.Add(new ReportSparePartsViewModel
                         {
@@ -101,9 +91,9 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                             WorkName = work.WorkName,
                             SparePart = sparePart.Value.Item1
                         });
-                    }
-                }
-            }
+                    });
+                });
+            });
             return sparePartWorkCar;
         }
 
