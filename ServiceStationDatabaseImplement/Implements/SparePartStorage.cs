@@ -44,7 +44,8 @@ namespace ServiceStationDatabaseImplement.Implements
             {
                 return context.SpareParts
                     .Include(rec => rec.User)
-                    .Where(rec => rec.SparePartName.Contains(model.SparePartName))
+                    .Where(rec => rec.SparePartName.Contains(model.SparePartName)
+                    || (model.UserId.HasValue && rec.UserId == model.UserId))
                     .Select(rec => new SparePartViewModel
                     {
                         Id = rec.Id,
@@ -117,7 +118,7 @@ namespace ServiceStationDatabaseImplement.Implements
         {
             sparePart.SparePartName = model.SparePartName;
             sparePart.SparePartPrice = model.Price;
-            sparePart.UserId = model.UserId;
+            sparePart.UserId = (int)model.UserId;
             return sparePart;
         }
     }

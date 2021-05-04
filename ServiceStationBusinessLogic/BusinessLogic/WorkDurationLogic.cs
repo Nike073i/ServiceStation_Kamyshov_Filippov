@@ -19,7 +19,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             {
                 return _workDurationStorage.GetFullList();
             }
-            if (model.TimeFrom.HasValue || model.TimeTo.HasValue)
+            if (model.TimeFrom.HasValue || model.TimeTo.HasValue || model.UserId.HasValue)
             {
                 return _workDurationStorage.GetFilteredList(model);
             }

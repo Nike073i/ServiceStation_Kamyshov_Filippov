@@ -1,4 +1,5 @@
 ﻿using NLog;
+using ServiceStationBusinessLogic.BindingModels;
 using ServiceStationBusinessLogic.BusinessLogic;
 using ServiceStationBusinessLogic.ViewModels;
 using System;
@@ -48,7 +49,7 @@ namespace ServiceStationStorekeeperView
             InitializeComponent();
             try
             {
-                List<SparePartViewModel> list = logic.Read(null);
+                List<SparePartViewModel> list = logic.Read(new SparePartBindingModel { UserId = App.Storekeeper.Id });
                 if (list != null)
                 {
                     comboBoxSparePart.ItemsSource = list;

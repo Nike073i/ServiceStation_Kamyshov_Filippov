@@ -15,7 +15,7 @@ namespace ServiceStationDatabaseImplement.Implements
         {
             work.WorkName = model.WorkName;
             work.WorkPrice = model.Price;
-            work.UserId = model.UserId;
+            work.UserId = (int)model.UserId;
             if (work.Id == 0)
             {
                 context.Works.Add(work);
@@ -90,7 +90,8 @@ namespace ServiceStationDatabaseImplement.Implements
                 return context.Works.Include(rec => rec.WorkSpareParts)
                     .ThenInclude(rec => rec.SparePart)
                     .Include(rec => rec.User)
-                    .Where(rec => rec.WorkName.Contains(model.WorkName))
+                    .Where(rec => rec.WorkName.Contains(model.WorkName)
+                    || model.UserId.HasValue && rec.UserId == model.UserId)
                     .ToList()
                     .Select(rec => new WorkViewModel
                     {

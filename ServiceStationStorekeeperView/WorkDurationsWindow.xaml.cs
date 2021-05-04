@@ -33,7 +33,7 @@ namespace ServiceStationStorekeeperView
         {
             try
             {
-                var list = logic.Read(null);
+                var list = logic.Read(new WorkDurationBindingModel { UserId = App.Storekeeper.Id });
                 if (list != null)
                 {
                     dataGridWorkDurations.ItemsSource = list;

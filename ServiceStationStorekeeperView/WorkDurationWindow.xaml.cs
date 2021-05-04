@@ -36,7 +36,7 @@ namespace ServiceStationStorekeeperView
             InitializeComponent();
             try
             {
-                List<WorkViewModel> list = logicW.Read(null);
+                List<WorkViewModel> list = logicW.Read(new WorkBindingModel { UserId = App.Storekeeper.Id });
                 if (list != null)
                 {
                     comboBoxWork.ItemsSource = list;

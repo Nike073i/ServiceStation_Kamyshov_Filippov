@@ -123,7 +123,7 @@ namespace ServiceStationDatabaseImplement.Implements
                     .ThenInclude(rec => rec.Car)
                     .Include(rec => rec.User)
                     .Where(rec => rec.TechnicalMaintenanceName.Contains(model.TechnicalMaintenanceName)
-                    || (model.SelectedWorks != null && (rec.TechnicalMaintenanceWorks.Select(recTMW => recTMW.WorkId).Any(recTMW => model.SelectedWorks.Contains(recTMW)))))
+                    || (model.SelectedWorks != null && (rec.TechnicalMaintenanceWorks.Any(recTMW => model.SelectedWorks.Contains(recTMW.WorkId)))))
                     .ToList()
                     .Select(rec => new TechnicalMaintenanceViewModel
                     {

@@ -37,7 +37,7 @@ namespace ServiceStationStorekeeperView
                 var listCars = logicC.Read(null);
                 comboBoxCars.ItemsSource = listCars;
                 comboBoxCars.SelectedItem = null;
-                var list = logicS.Read(null);
+                var list = logicS.Read(new SparePartBindingModel { UserId = App.Storekeeper.Id });
                 listBoxAllSpareParts.ItemsSource = list;
             }
             catch (Exception ex)

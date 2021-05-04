@@ -31,7 +31,7 @@ namespace ServiceStationStorekeeperView
         {
             try
             {
-                var list = logic.Read(null);
+                var list = logic.Read(new SparePartBindingModel { UserId = App.Storekeeper.Id });
                 if (list != null)
                 {
                     dataGridSpareParts.ItemsSource = list;

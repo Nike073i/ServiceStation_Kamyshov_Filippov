@@ -15,7 +15,7 @@ namespace ServiceStationDatabaseImplement.Implements
         {
             workDuration.WorkId = model.WorkId;
             workDuration.Duration = model.Duration;
-            workDuration.UserId = model.UserId;
+            workDuration.UserId = (int)model.UserId;
             return workDuration;
         }
 
@@ -54,7 +54,9 @@ namespace ServiceStationDatabaseImplement.Implements
                 return context.WorkDurations
                     .Include(rec => rec.User)
                     .Include(rec => rec.Work)
-                    .Where(rec => model.TimeFrom <= rec.Duration && model.TimeTo >= rec.Duration)
+                    .Where(rec => (!model.TimeFrom.HasValue && !model.TimeTo.HasValue && rec.Duration == model.Duration)
+                    || (model.TimeFrom.HasValue && model.TimeTo.HasValue && rec.Duration >= model.TimeFrom.Value && rec.Duration <= model.TimeTo.Value)
+                    || (model.UserId.HasValue && rec.UserId == model.UserId))
                     .Select(rec => new WorkDurationViewModel
                     {
                         WorkId = rec.Work.Id,
