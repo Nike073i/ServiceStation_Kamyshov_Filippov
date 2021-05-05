@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BusinessLogic\" />
     <Folder Include="Enums\" />
-    <Folder Include="HelperModels\" />
     <Folder Include="Interfaces\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>

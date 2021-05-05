@@ -4,9 +4,6 @@ using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-
 
 namespace ServiceStationBusinessLogic.BusinessLogic
 {
@@ -133,19 +130,6 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                 DateTo = model.DateTo.Value,
                 SparePartWorkCar = GetSparePartWorkCar(model)
             });
-        }
-
-        public void SendMail(string email, string fileName, string subject)
-        {
-            MailAddress from = new MailAddress("gentle.dan.test@gmail.com", "СТО Руки-Крюки");
-            MailAddress to = new MailAddress(email);
-            MailMessage m = new MailMessage(from, to);
-            m.Subject = subject;
-            m.Attachments.Add(new Attachment(fileName));
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("gentle.dan.test@gmail.com", "594634Ol");
-            smtp.EnableSsl = true;
-            smtp.Send(m);
         }
     }
 }

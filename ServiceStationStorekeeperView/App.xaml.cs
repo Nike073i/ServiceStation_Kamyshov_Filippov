@@ -1,7 +1,10 @@
 ﻿using ServiceStationBusinessLogic.BusinessLogic;
+using ServiceStationBusinessLogic.HelperModels;
 using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
 using ServiceStationDatabaseImplement.Implements;
+using System;
+using System.Configuration;
 using System.Windows;
 using Unity;
 using Unity.Lifetime;
@@ -18,6 +21,14 @@ namespace ServiceStationStorekeeperView
         {
             base.OnStartup(e);
             var container = BuildUnityContainer();
+            MailLogic.MailConfig(new MailConfig
+            {
+                SmtpClientHost = ConfigurationManager.AppSettings["SmtpClientHost"],
+                SmtpClientPort = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpClientPort"]),
+                MailLogin = ConfigurationManager.AppSettings["MailLogin"],
+                MailPassword = ConfigurationManager.AppSettings["MailPassword"],
+                MailName = ConfigurationManager.AppSettings["MailName"]
+            });
             var authWindow = container.Resolve<AuthorizationWindow>();
             authWindow.ShowDialog();
         }

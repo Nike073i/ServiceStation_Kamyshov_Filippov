@@ -2,6 +2,7 @@
 using NLog;
 using ServiceStationBusinessLogic.BindingModels;
 using ServiceStationBusinessLogic.BusinessLogic;
+using ServiceStationBusinessLogic.HelperModels;
 using System;
 using System.Windows;
 using Unity;
@@ -114,20 +115,25 @@ namespace ServiceStationWorkerView
             try
             {
                 var fileName = "Отчет.pdf";
-                var subject = "СТО Руки-Крюки. Отчет по ТО от " + DatePikerFrom.SelectedDate + " по " + DatePikerTo;
                 logic.SaveSparePartsToPdfFile(new ReportWorkerBindingModel
                 {
                     FileName = fileName,
                     DateFrom = DatePikerFrom.SelectedDate,
                     DateTo = DatePikerTo.SelectedDate
                 });
-                logic.SendMail(App.Worker.Email, fileName, subject);
+                MailLogic.MailSend(new MailSendInfo
+                {
+                    MailAddress = App.Worker.Email,
+                    Subject = "Отчет по ТО",
+                    Text = "Отчет по ТО от " + DatePikerFrom.SelectedDate.Value.ToShortDateString() + " по " + DatePikerTo.SelectedDate.Value.ToShortDateString(),
+                    FileName = fileName
+                });
                 MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK,
                 MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка сохранения отчета: " + ex.Message);
+                logger.Error("Ошибка отправки отчета: " + ex.Message);
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
                 MessageBoxImage.Error);
             }

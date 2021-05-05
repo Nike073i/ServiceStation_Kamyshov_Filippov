@@ -2,6 +2,7 @@
 using NLog;
 using ServiceStationBusinessLogic.BindingModels;
 using ServiceStationBusinessLogic.BusinessLogic;
+using ServiceStationBusinessLogic.HelperModels;
 using System;
 using System.Windows;
 using Unity;
@@ -90,7 +91,6 @@ namespace ServiceStationStorekeeperView
                     }
                 }
             }
-
         }
 
         private void ButtonPDFToEmail_Click(object sender, RoutedEventArgs e)
@@ -111,20 +111,25 @@ namespace ServiceStationStorekeeperView
             try
             {
                 var fileName = "Отчет.pdf";
-                var subject = "СТО Руки-Крюки. Отчет по запчастям от " + DatePikerFrom.SelectedDate + " по " + DatePikerTo;
                 logic.SaveSparePartsToPdfFile(new ReportStorekeeperBindingModel
                 {
                     FileName = fileName,
                     DateFrom = DatePikerFrom.SelectedDate,
                     DateTo = DatePikerTo.SelectedDate
                 });
-                logic.SendMail(App.Storekeeper.Email, fileName, subject);
+                MailLogic.MailSend(new MailSendInfo
+                {
+                    MailAddress = App.Storekeeper.Email,
+                    Subject = "Отчет по запчастям",
+                    Text = "Отчет по запчастям от " + DatePikerFrom.SelectedDate.Value.ToShortDateString() + " по " + DatePikerTo.SelectedDate.Value.ToShortDateString(),
+                    FileName = fileName
+                });
                 MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK,
                 MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка сохранения отчета: " + ex.Message);
+                logger.Error("Ошибка отправки отчета: " + ex.Message);
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
                 MessageBoxImage.Error);
             }
