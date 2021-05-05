@@ -41,9 +41,10 @@ namespace ServiceStationStorekeeperView
                 var dataSource = logic.GetSparePartWorkCar(new ReportStorekeeperBindingModel
                 {
                     DateFrom = DatePikerFrom.SelectedDate,
-                    DateTo = DatePikerTo.SelectedDate
+                    DateTo = DatePikerTo.SelectedDate,
+                    UserId = App.Storekeeper.Id
                 });
-                dataGridSpareParts.ItemsSource = dataSource;
+                dataGridSpareParts.ItemsSource = dataSource.Item1;
                 textBoxDateFrom.Content = DatePikerFrom.SelectedDate.Value.ToLongDateString();
                 textBoxDateTo.Content = DatePikerTo.SelectedDate.Value.ToLongDateString();
             }

@@ -27,10 +27,11 @@
         </StackPanel>
         <DataGrid x:Name="dataGridSpareParts" AutoGenerateColumns="False" CanUserAddRows="false" Margin="10" Height="310">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Запчасть" Binding="{Binding Path=SparePart}" Width="0.25*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата использования" Binding="{Binding StringFormat=dd.MM.yy, Path=DatePassed}" Width="0.25*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Запчасть" Binding="{Binding Path=SparePart}" Width="0.20*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Количество" Binding="{Binding Path=Count}" Width="0.15*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата использования" Binding="{Binding StringFormat=dd.MM.yy, Path=DatePassed}" Width="0.20*"></DataGridTextColumn>
                 <DataGridTextColumn Header="Работа" Binding="{Binding Path=WorkName}" Width="0.25*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Машина" Binding="{Binding Path=CarName}" Width="0.25*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Машина" Binding="{Binding Path=CarName}" Width="0.20*"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>

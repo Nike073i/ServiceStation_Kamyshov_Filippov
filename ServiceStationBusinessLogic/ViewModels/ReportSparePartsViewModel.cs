@@ -8,5 +8,6 @@ namespace ServiceStationBusinessLogic.ViewModels
         public DateTime DatePassed { get; set; }
         public string SparePart { get; set; }
         public string WorkName { get; set; }
+        public int Count { get; set; }
     }
 }

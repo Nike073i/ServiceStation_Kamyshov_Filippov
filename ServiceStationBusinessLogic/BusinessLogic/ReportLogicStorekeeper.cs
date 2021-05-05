@@ -2,6 +2,7 @@
 using ServiceStationBusinessLogic.HelperModels;
 using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,7 +62,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         }
 
         // Получение списка запчастей с указанием работ и машин за определенный период
-        public List<ReportSparePartsViewModel> GetSparePartWorkCar(ReportStorekeeperBindingModel model)
+        public Tuple<List<ReportSparePartsViewModel>, List<Tuple<string, int>>> GetSparePartWorkCar(ReportStorekeeperBindingModel model)
         {
             var serviceRecordings = _serviceRecording.GetFilteredList(new ServiceRecordingBindingModel
             {
@@ -76,7 +77,10 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                 {
                     Id = serviceRecording.TechnicalMaintenanceId
                 });
-                technicalMaintenances.TechnicalMaintenanceWorks.ToList().ForEach(technicalMaintenance =>
+                technicalMaintenances.TechnicalMaintenanceWorks.ToList().Where(rec => model.UserId.HasValue && _workStorage.GetElement(new WorkBindingModel
+                { Id = rec.Key }).UserId == model.UserId.Value)
+                .ToList()
+                .ForEach(technicalMaintenance =>
                 {
                     var work = _workStorage.GetElement(new WorkBindingModel
                     {
@@ -89,12 +93,15 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                             CarName = serviceRecording.CarName,
                             DatePassed = serviceRecording.DatePassed,
                             WorkName = work.WorkName,
-                            SparePart = sparePart.Value.Item1
+                            SparePart = sparePart.Value.Item1,
+                            Count = sparePart.Value.Item2
                         });
                     });
                 });
             });
-            return sparePartWorkCar;
+            var TotalInfo = sparePartWorkCar.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
+            (rec.Key, rec.Sum(sparePart => sparePart.Count))).ToList();
+            return new Tuple<List<ReportSparePartsViewModel>, List<Tuple<string, int>>>(sparePartWorkCar, TotalInfo);
         }
 
         /// Сохранение машин с указанием работ в файл-Word
@@ -122,13 +129,15 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         /// Сохранение отчета продвижения запчастей в файл-Pdf
         public void SaveSparePartsToPdfFile(ReportStorekeeperBindingModel model)
         {
+            var ReportInfo = GetSparePartWorkCar(model);
             SaveToPdfStorekeeper.CreateDoc(new PdfInfoStorekeeper
             {
                 FileName = model.FileName,
                 Title = "Список использованных запчастей",
                 DateFrom = model.DateFrom.Value,
                 DateTo = model.DateTo.Value,
-                SparePartWorkCar = GetSparePartWorkCar(model)
+                SparePartWorkCar = ReportInfo.Item1,
+                TotalInfo = ReportInfo.Item2
             });
         }
     }

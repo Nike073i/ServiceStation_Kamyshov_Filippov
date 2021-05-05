@@ -10,5 +10,6 @@ namespace ServiceStationBusinessLogic.BindingModels
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public List<WorkViewModel> Works { get; set; }
+        public int? UserId { get; set; }
     }
 }

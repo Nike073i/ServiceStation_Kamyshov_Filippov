@@ -11,5 +11,6 @@ namespace ServiceStationBusinessLogic.HelperModels
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public List<ReportSparePartsViewModel> SparePartWorkCar { get; set; }
+        public List<Tuple<string, int>> TotalInfo { get; set; }
     }
 }

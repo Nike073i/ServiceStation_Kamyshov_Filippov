@@ -21,16 +21,16 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             paragraph.Format.SpaceAfter = "1cm";
             paragraph.Format.Alignment = ParagraphAlignment.Center;
             paragraph.Style = "Normal";
-            var table = document.LastSection.AddTable();
-            List<string> columns = new List<string> { "4cm", "3cm", "5cm", "5cm" };
-            foreach (var elem in columns)
+            var tableSparePartWork = document.LastSection.AddTable();
+            List<string> tableSparepartWorkHeader = new List<string> { "3cm", "3cm", "3cm", "4cm", "4cm" };
+            foreach (var header in tableSparepartWorkHeader)
             {
-                table.AddColumn(elem);
+                tableSparePartWork.AddColumn(header);
             }
             CreateRow(new PdfRowParameters
             {
-                Table = table,
-                Texts = new List<string> { "Запчасть", "Дата применения", "Работа", "Машина" },
+                Table = tableSparePartWork,
+                Texts = new List<string> { "Запчасть", "Количество", "Дата применения", "Работа", "Машина" },
                 Style = "NormalTitle",
                 ParagraphAlignment = ParagraphAlignment.Center
             });
@@ -38,9 +38,10 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             {
                 CreateRow(new PdfRowParameters
                 {
-                    Table = table,
+                    Table = tableSparePartWork,
                     Texts = new List<string> {
                                 sparePartWorkCar.SparePart,
+                                sparePartWorkCar.Count.ToString(),
                                 sparePartWorkCar.DatePassed.ToShortDateString(),
                                 sparePartWorkCar.WorkName,
                                 sparePartWorkCar.CarName,
@@ -49,6 +50,39 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     ParagraphAlignment = ParagraphAlignment.Left
                 });
             }
+            Paragraph totalInfoParagraph = document.LastSection.AddParagraph("Итог");
+            totalInfoParagraph.Format.SpaceAfter = "1cm";
+            totalInfoParagraph.Format.SpaceBefore = "1cm";
+            totalInfoParagraph.Format.Alignment = ParagraphAlignment.Center;
+            totalInfoParagraph.Style = "NormalTitle";
+
+            var tableTotalInfo = document.LastSection.AddTable();
+            List<string> tableTotalInfoHeader = new List<string> { "3cm", "3cm" };
+            foreach (var header in tableTotalInfoHeader)
+            {
+                tableTotalInfo.AddColumn(header);
+            }
+            CreateRow(new PdfRowParameters
+            {
+                Table = tableTotalInfo,
+                Texts = new List<string> { "Запчасть", "Общее количество" },
+                Style = "NormalTitle",
+                ParagraphAlignment = ParagraphAlignment.Center
+            });
+            foreach (var sparePart in info.TotalInfo)
+            {
+                CreateRow(new PdfRowParameters
+                {
+                    Table = tableTotalInfo,
+                    Texts = new List<string> {
+                                sparePart.Item1,
+                                sparePart.Item2.ToString()
+                            },
+                    Style = "Normal",
+                    ParagraphAlignment = ParagraphAlignment.Left
+                });
+            }
+
             PdfDocumentRenderer renderer = new PdfDocumentRenderer(true,
                 PdfSharp.Pdf.PdfFontEmbedding.Always)
             {
@@ -63,7 +97,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         {
             Style style = document.Styles["Normal"];
             style.Font.Name = "Times New Roman";
-            style.Font.Size = 14;
+            style.Font.Size = 10;
             style = document.Styles.AddStyle("NormalTitle", "Normal");
             style.Font.Bold = true;
         }
