@@ -34,7 +34,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                 Style = "NormalTitle",
                 ParagraphAlignment = ParagraphAlignment.Center
             });
-            foreach (var sparePartWorkCar in info.SparePartWorkCar)
+            foreach (var sparePartWorkCar in info.ReportInfoes.SparePartWorkCar)
             {
                 CreateRow(new PdfRowParameters
                 {
@@ -69,7 +69,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                 Style = "NormalTitle",
                 ParagraphAlignment = ParagraphAlignment.Center
             });
-            foreach (var sparePart in info.TotalInfo)
+            foreach (var sparePart in info.ReportInfoes.TotalCount)
             {
                 CreateRow(new PdfRowParameters
                 {

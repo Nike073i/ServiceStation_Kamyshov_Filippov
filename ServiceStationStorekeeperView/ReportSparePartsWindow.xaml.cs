@@ -44,7 +44,7 @@ namespace ServiceStationStorekeeperView
                     DateTo = DatePikerTo.SelectedDate,
                     UserId = App.Storekeeper.Id
                 });
-                dataGridSpareParts.ItemsSource = dataSource.Item1;
+                dataGridSpareParts.ItemsSource = dataSource.SparePartWorkCar;
                 textBoxDateFrom.Content = DatePikerFrom.SelectedDate.Value.ToLongDateString();
                 textBoxDateTo.Content = DatePikerTo.SelectedDate.Value.ToLongDateString();
             }
@@ -79,7 +79,8 @@ namespace ServiceStationStorekeeperView
                         {
                             FileName = dialog.FileName,
                             DateFrom = DatePikerFrom.SelectedDate,
-                            DateTo = DatePikerTo.SelectedDate
+                            DateTo = DatePikerTo.SelectedDate,
+                            UserId = App.Storekeeper.Id
                         });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK,
                        MessageBoxImage.Information);
@@ -116,7 +117,8 @@ namespace ServiceStationStorekeeperView
                 {
                     FileName = fileName,
                     DateFrom = DatePikerFrom.SelectedDate,
-                    DateTo = DatePikerTo.SelectedDate
+                    DateTo = DatePikerTo.SelectedDate,
+                    UserId = App.Storekeeper.Id
                 });
                 MailLogic.MailSend(new MailSendInfo
                 {

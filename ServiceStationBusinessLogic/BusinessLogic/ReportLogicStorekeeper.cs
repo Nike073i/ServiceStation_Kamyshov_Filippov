@@ -62,7 +62,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         }
 
         // Получение списка запчастей с указанием работ и машин за определенный период
-        public Tuple<List<ReportSparePartsViewModel>, List<Tuple<string, int>>> GetSparePartWorkCar(ReportStorekeeperBindingModel model)
+        public ReportInfoes GetSparePartWorkCar(ReportStorekeeperBindingModel model)
         {
             var serviceRecordings = _serviceRecording.GetFilteredList(new ServiceRecordingBindingModel
             {
@@ -99,9 +99,18 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     });
                 });
             });
-            var TotalInfo = sparePartWorkCar.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
+            var totalCount = sparePartWorkCar.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
             (rec.Key, rec.Sum(sparePart => sparePart.Count))).ToList();
-            return new Tuple<List<ReportSparePartsViewModel>, List<Tuple<string, int>>>(sparePartWorkCar, TotalInfo);
+
+            var countByDates = sparePartWorkCar.GroupBy(x => new { x.DatePassed.Year, x.DatePassed.Month })
+                .Select(x => new Tuple<string, int>((string.Format("{0}/{1}", x.Key.Year, x.Key.Month)), x.Count())).ToList();
+
+            return new ReportInfoes
+            {
+                SparePartWorkCar = sparePartWorkCar,
+                TotalCount = totalCount,
+                CountByDates = countByDates
+            };
         }
 
         /// Сохранение машин с указанием работ в файл-Word
@@ -129,15 +138,13 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         /// Сохранение отчета продвижения запчастей в файл-Pdf
         public void SaveSparePartsToPdfFile(ReportStorekeeperBindingModel model)
         {
-            var ReportInfo = GetSparePartWorkCar(model);
             SaveToPdfStorekeeper.CreateDoc(new PdfInfoStorekeeper
             {
                 FileName = model.FileName,
                 Title = "Список использованных запчастей",
                 DateFrom = model.DateFrom.Value,
                 DateTo = model.DateTo.Value,
-                SparePartWorkCar = ReportInfo.Item1,
-                TotalInfo = ReportInfo.Item2
+                ReportInfoes = GetSparePartWorkCar(model)
             });
         }
     }
