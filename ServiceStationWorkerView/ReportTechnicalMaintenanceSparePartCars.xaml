@@ -18,7 +18,7 @@
             <Button Content="в PDF" Width="100" Style="{StaticResource General_button}" Margin="20" Click="ButtonToPdf_Click"></Button>
             <Button Content="На почту" Width="100" Style="{StaticResource General_button}" Margin="20" Click="ButtonPDFToEmail_Click"></Button>
         </StackPanel>
-        <TextBlock HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}">Список использованных запчастей</TextBlock>
+        <TextBlock HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}">Список пройденных ТО</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center">c</Label>
             <Label x:Name="textBoxDateFrom" HorizontalAlignment="Center" Width="100" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center"></Label>

@@ -95,7 +95,39 @@ namespace ServiceStationStorekeeperView
 
         private void ButtonPDFToEmail_Click(object sender, RoutedEventArgs e)
         {
+            if (DatePikerTo.SelectedDate == null || DatePikerFrom.SelectedDate == null)
+            {
+                MessageBox.Show("Выберите даты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logger.Warn("Не выбраны даты для отчета");
+                return;
+            }
 
+            if (DatePikerFrom.SelectedDate >= DatePikerTo.SelectedDate)
+            {
+                MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                logger.Warn("Выбранная дата начала больше, чем дата окончания");
+                return;
+            }
+            try
+            {
+                var fileName = "Отчет.pdf";
+                var subject = "СТО Руки-Крюки. Отчет по запчастям от " + DatePikerFrom.SelectedDate + " по " + DatePikerTo;
+                logic.SaveSparePartsToPdfFile(new ReportStorekeeperBindingModel
+                {
+                    FileName = fileName,
+                    DateFrom = DatePikerFrom.SelectedDate,
+                    DateTo = DatePikerTo.SelectedDate
+                });
+                logic.SendMail(App.Storekeeper.Email, fileName, subject);
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Ошибка сохранения отчета: " + ex.Message);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            }
         }
     }
 }
