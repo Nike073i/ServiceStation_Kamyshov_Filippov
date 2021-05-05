@@ -102,8 +102,8 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             var totalCount = sparePartWorkCar.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
             (rec.Key, rec.Sum(sparePart => sparePart.Count))).ToList();
 
-            var countByDates = sparePartWorkCar.GroupBy(x => new { x.DatePassed.Year, x.DatePassed.Month })
-                .Select(x => new Tuple<string, int>((string.Format("{0}/{1}", x.Key.Year, x.Key.Month)), x.Count())).ToList();
+            var countByDates = sparePartWorkCar.GroupBy(rec => new { rec.DatePassed.Year, rec.DatePassed.Month })
+                .Select(rec => new Tuple<string, int>((string.Format("{0}/{1}", rec.Key.Year, rec.Key.Month)), rec.Sum(sparePart => sparePart.Count))).ToList();
 
             return new ReportInfoes
             {
