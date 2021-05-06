@@ -1,5 +1,4 @@
 ﻿using ServiceStationBusinessLogic.HelperModels;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls.DataVisualization.Charting;
 
@@ -17,15 +16,13 @@ namespace ServiceStationStorekeeperView
             InitializeComponent();
         }
 
-        private void LoadData()
+        private void StatisticsWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            ((PieSeries)mcChart.Series[0]).ItemsSource = ReportInfoes.TotalCount;
-            ((ColumnSeries)mcChart2.Series[0]).ItemsSource = ReportInfoes.CountByDates;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadData();
+            if (ReportInfoes != null)
+            {
+                ((PieSeries)TotalCountChart.Series[0]).ItemsSource = ReportInfoes.TotalCount;
+                ((ColumnSeries)CountByMounthChart.Series[0]).ItemsSource = ReportInfoes.CountByDates;
+            }
         }
     }
 }
