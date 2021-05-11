@@ -58,7 +58,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     });
                 });
             });
-            return record;
+            return record.OrderBy(rec => rec.Value.CarName).ToDictionary(rec => rec.Key, rec => rec.Value);
         }
 
         // Получение списка запчастей с указанием работ и машин за определенный период
@@ -70,7 +70,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                 DateTo = model.DateTo
             });
 
-            var sparePartWorkCar = new List<ReportSparePartsViewModel>();
+            var listReportSpareParts = new List<ReportSparePartsViewModel>();
             serviceRecordings.ForEach(serviceRecording =>
             {
                 var technicalMaintenances = _technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
@@ -88,7 +88,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     });
                     work.WorkSpareParts.ToList().ForEach(sparePart =>
                     {
-                        sparePartWorkCar.Add(new ReportSparePartsViewModel
+                        listReportSpareParts.Add(new ReportSparePartsViewModel
                         {
                             CarName = serviceRecording.CarName,
                             DatePassed = serviceRecording.DatePassed,
@@ -99,10 +99,10 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     });
                 });
             });
-            var totalCount = sparePartWorkCar.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
-            (rec.Key, rec.Sum(sparePart => sparePart.Count))).ToList();
-
-            var countByDates = sparePartWorkCar.OrderBy(rec => rec.DatePassed).GroupBy(rec => new { rec.DatePassed.Year, rec.DatePassed.Month })
+            var sparePartWorkCar = listReportSpareParts.OrderBy(rec => rec.DatePassed).ThenBy(rec => rec.SparePart).ToList();
+            var totalCount = listReportSpareParts.GroupBy(sparePart => sparePart.SparePart).Select(rec => new Tuple<string, int>
+            (rec.Key, rec.Sum(sparePart => sparePart.Count))).OrderBy(rec => rec.Item1).ToList();
+            var countByDates = listReportSpareParts.OrderBy(rec => rec.DatePassed).GroupBy(rec => new { rec.DatePassed.Year, rec.DatePassed.Month })
                 .Select(rec => new Tuple<string, int>((string.Format("{0}/{1}", rec.Key.Month, rec.Key.Year)), rec.Sum(sparePart => sparePart.Count))).ToList();
 
             return new ReportInfoes
