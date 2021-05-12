@@ -9,7 +9,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="ServiceStationStorekeeperView.StatisticsWindow" 
         mc:Ignorable="d"
         Loaded="StatisticsWindow_Loaded"
-        Title="Работы" Icon="Images/icon.ico" ResizeMode="NoResize" Width="900" Height="830">
+        Title="Статистические диаграммы" Icon="Images/icon.ico" ResizeMode="NoResize" Width="900" Height="830">
     <StackPanel>
         <Label HorizontalAlignment="Center" FontSize="14" FontFamily="{StaticResource General_fontFamily}" Margin="10,5" Content="Использование запчастей за весь период"/>
         <DVC:Chart  x:Name="TotalCountChart" Background="#FF9B9B9B" Height="350" Margin="10,5">
