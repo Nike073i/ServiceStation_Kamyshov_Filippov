@@ -18,6 +18,8 @@ namespace ServiceStationWorkerView
         public IUnityContainer Container { get; set; }
         private readonly UserLogic logic;
         private readonly Logger logger;
+        private int passwordMinLength = 5;
+        private int passwordMaxLength = 15;
         public RegistrationWindow(UserLogic logic)
         {
             InitializeComponent();
@@ -55,6 +57,11 @@ namespace ServiceStationWorkerView
             {
                 MessageBox.Show("Заполните поле \"пароль\"", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 logger.Warn("Не заполнено поле Пароль при регистрации");
+                return;
+            }
+            if (textBoxPassword.Text.Length > passwordMaxLength || textBoxPassword.Text.Length < passwordMinLength)
+            {
+                MessageBox.Show($"Пароль должен быть длиной от {passwordMinLength} до {passwordMaxLength}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             try

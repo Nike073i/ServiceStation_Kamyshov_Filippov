@@ -18,8 +18,8 @@ namespace ServiceStationStorekeeperView
         public IUnityContainer Container { get; set; }
         private readonly UserLogic logic;
         private readonly Logger logger;
-        private readonly int _passwordMaxLength = 5;
-        private readonly int _passwordMinLength = 32;
+        private readonly int _passwordMaxLength = 32;
+        private readonly int _passwordMinLength = 5;
         public RegistrationWindow(UserLogic logic)
         {
             InitializeComponent();

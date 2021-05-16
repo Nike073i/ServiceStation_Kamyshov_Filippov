@@ -13,14 +13,14 @@ namespace ServiceStationWorkerView
     /// <summary>
     /// Логика взаимодействия для SparePartsListWindow.xaml
     /// </summary>
-    public partial class SparePartsListWindow : Window
+    public partial class SparePartListWindow : Window
     {
         [Dependency]
         public IUnityContainer Container { get; set; }
         private readonly TechnicalMaintenanceLogic logicTM;
         private readonly ReportLogicWorker logicRW;
         private readonly Logger logger;
-        public SparePartsListWindow(TechnicalMaintenanceLogic logicTM, ReportLogicWorker logicRW)
+        public SparePartListWindow(TechnicalMaintenanceLogic logicTM, ReportLogicWorker logicRW)
         {
             InitializeComponent();
             this.logicTM = logicTM;
