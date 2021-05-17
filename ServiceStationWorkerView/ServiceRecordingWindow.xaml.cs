@@ -46,7 +46,7 @@ namespace ServiceStationWorkerView
                     })?[0];
                     if (serviceRecording != null)
                     {
-                        carComboBox.SelectedValue = serviceRecording.Id;
+                        carComboBox.SelectedValue = serviceRecording.CarId;
                         technicalMaintenanceComboBox.SelectedValue = serviceRecording.TechnicalMaintenanceId;
                         dateCarPass.SelectedDate = serviceRecording.DatePassed;
                     }
