@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ServiceStationBusinessLogic.HelperModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Controls.DataVisualization.Charting;
 
 namespace ServiceStationWorkerView
 {
@@ -19,9 +9,18 @@ namespace ServiceStationWorkerView
     /// </summary>
     public partial class ChartsWindow : Window
     {
+        public ReportInfoesWorker reportInfoes { get; set; }
         public ChartsWindow()
         {
             InitializeComponent();
+        }
+        private void StatisticsWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (reportInfoes != null)
+            {
+                ((PieSeries)FrequentlyPassedChart.Series[0]).ItemsSource = reportInfoes.TotalCount;
+                ((ColumnSeries)CountByMounthChart.Series[0]).ItemsSource = reportInfoes.CountByMounth;
+            }
         }
     }
 }

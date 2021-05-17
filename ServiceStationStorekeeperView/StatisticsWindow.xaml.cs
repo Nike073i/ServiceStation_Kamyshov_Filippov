@@ -9,7 +9,7 @@ namespace ServiceStationStorekeeperView
     /// </summary>
     public partial class StatisticsWindow : Window
     {
-        public ReportInfoes ReportInfoes { get; set; }
+        public ReportInfoesStorekeeper ReportInfoes { get; set; }
 
         public StatisticsWindow()
         {

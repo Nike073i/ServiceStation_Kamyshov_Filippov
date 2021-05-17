@@ -16,7 +16,7 @@ namespace ServiceStationDatabaseImplement.Implements
             serviceRecording.DatePassed = model.DatePassed;
             serviceRecording.CarId = model.CarId;
             serviceRecording.TechnicalMaintenanceId = model.TechnicalMaintenanceId;
-            serviceRecording.UserId = model.UserId;
+            serviceRecording.UserId = (int) model.UserId;
             return serviceRecording;
         }
         public ServiceRecordingViewModel GetElement(ServiceRecordingBindingModel model)
@@ -59,7 +59,10 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Include(rec => rec.User)
                     .Include(rec => rec.TechnicalMaintenance)
                     .Include(rec => rec.Car)
-                    .Where(rec => model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed)
+                    .Where(rec => (model.UserId.HasValue && rec.UserId == model.UserId && model.DateFrom.HasValue && model.DateTo.HasValue &&
+                    model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed) || 
+                    (model.UserId.HasValue && rec.UserId == model.UserId) ||
+                    (model.ReportStorekeeper.HasValue && model.ReportStorekeeper.Value && model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed))
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,

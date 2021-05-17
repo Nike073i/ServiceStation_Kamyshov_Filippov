@@ -33,11 +33,11 @@ namespace ServiceStationWorkerView
         {
             try
             {
-                var listTechnicalMaintenances = logicTM.Read(null);
+                var listTechnicalMaintenances = logicTM.Read(new TechnicalMaintenanceBindingModel { UserId = App.Worker.Id });
                 comboBoxTechnicalMaintenances.ItemsSource = listTechnicalMaintenances;
                 comboBoxTechnicalMaintenances.SelectedItem = null;
-                var list = logicC.Read(null);
-                listBoxAvailableCars.ItemsSource = list;
+                var listCar = logicC.Read(new CarBindingModel { UserId = App.Worker.Id });
+                listBoxAvailableCars.ItemsSource = listCar;
             }
             catch (Exception ex)
             {

@@ -6,7 +6,7 @@ namespace ServiceStationBusinessLogic.BindingModels
     {
         public int? Id { get; set; }
         public string CarName { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public Dictionary<int, string> CarSpareParts { get; set; }
     }
 }

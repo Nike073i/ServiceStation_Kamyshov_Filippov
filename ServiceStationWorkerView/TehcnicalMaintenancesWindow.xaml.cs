@@ -31,7 +31,7 @@ namespace ServiceStationWorkerView
         {
             try
             {
-                var list = logic.Read(null);
+                var list = logic.Read(new TechnicalMaintenanceBindingModel { UserId = App.Worker.Id });
                 if (list != null)
                 {
                     dataGridTechnicalMaintenances.ItemsSource = list;

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ServiceStationWorkerView"
         Loaded="SparePartsListWindowLoad"
         mc:Ignorable="d"
-        Title="Список ТО" Height="400" Width="400" Icon="Images/icon.ico" ResizeMode="NoResize">
+        Title="Список запчастей" Height="400" Width="400" Icon="Images/icon.ico" ResizeMode="NoResize">
     <StackPanel VerticalAlignment="Center">
         <Label Content="ТО" FontSize="14" Margin="10,0" FontFamily="{StaticResource General_fontFamily}"></Label>
         <DataGrid x:Name="dataGridTechnicalMaintenances" AutoGenerateColumns="False" CanUserAddRows="false" Height="250" Margin="10,5">

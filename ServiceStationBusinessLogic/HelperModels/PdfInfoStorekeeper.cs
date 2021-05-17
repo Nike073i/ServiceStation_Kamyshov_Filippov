@@ -10,6 +10,6 @@ namespace ServiceStationBusinessLogic.HelperModels
         public string Title { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public ReportInfoes ReportInfoes { get; set; }
+        public ReportInfoesStorekeeper ReportInfoes { get; set; }
     }
 }

@@ -8,6 +8,7 @@
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="ServiceStationWorkerView.ChartsWindow" 
         mc:Ignorable="d"
+        Loaded="StatisticsWindow_Loaded"
         
         Title="Диаграммы" Icon="Images/icon.ico" ResizeMode="NoResize" Width="900" Height="830">
     <StackPanel>

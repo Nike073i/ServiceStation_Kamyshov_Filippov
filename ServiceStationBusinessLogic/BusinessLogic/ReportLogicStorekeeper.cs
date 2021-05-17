@@ -62,7 +62,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         }
 
         // Получение списка запчастей с указанием работ и машин за определенный период
-        public ReportInfoes GetSparePartWorkCar(ReportStorekeeperBindingModel model)
+        public ReportInfoesStorekeeper GetSparePartWorkCar(ReportStorekeeperBindingModel model)
         {
             var serviceRecordings = _serviceRecording.GetFilteredList(new ServiceRecordingBindingModel
             {
@@ -105,7 +105,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
             var countByDates = listReportSpareParts.OrderBy(rec => rec.DatePassed).GroupBy(rec => new { rec.DatePassed.Year, rec.DatePassed.Month })
                 .Select(rec => new Tuple<string, int>((string.Format("{0}/{1}", rec.Key.Month, rec.Key.Year)), rec.Sum(sparePart => sparePart.Count))).ToList();
 
-            return new ReportInfoes
+            return new ReportInfoesStorekeeper
             {
                 SparePartWorkCar = sparePartWorkCar,
                 TotalCount = totalCount,

@@ -43,7 +43,8 @@ namespace ServiceStationWorkerView
                 var dataSource = logic.GetSparePartTechnicalMaintenanceCar(new ReportWorkerBindingModel
                 {
                     DateFrom = DatePikerFrom.SelectedDate,
-                    DateTo = DatePikerTo.SelectedDate
+                    DateTo = DatePikerTo.SelectedDate,
+                    UserId = App.Worker.Id
                 });
                 dataGridTechnicalMaintenanceSparePartCars.ItemsSource = dataSource;
                 textBoxDateFrom.Content = DatePikerFrom.SelectedDate.Value.ToLongDateString();
@@ -82,7 +83,8 @@ namespace ServiceStationWorkerView
                         {
                             FileName = dialog.FileName,
                             DateFrom = DatePikerFrom.SelectedDate,
-                            DateTo = DatePikerTo.SelectedDate
+                            DateTo = DatePikerTo.SelectedDate,
+                            UserId = App.Worker.Id
                         });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButton.OK,
                        MessageBoxImage.Information);
@@ -119,7 +121,8 @@ namespace ServiceStationWorkerView
                 {
                     FileName = fileName,
                     DateFrom = DatePikerFrom.SelectedDate,
-                    DateTo = DatePikerTo.SelectedDate
+                    DateTo = DatePikerTo.SelectedDate,
+                    UserId = App.Worker.Id
                 });
                 MailLogic.MailSend(new MailSendInfo
                 {
@@ -154,12 +157,12 @@ namespace ServiceStationWorkerView
                 return;
             }
             var form = Container.Resolve<ChartsWindow>();
-           /* form.ReportInfoes = logic.GetSparePartTechnicalMaintenanceCar(new ReportWorkerBindingModel
+            form.reportInfoes = logic.GetTechnicalMaintenance(new ReportWorkerBindingModel
             {
                 DateFrom = DatePikerFrom.SelectedDate,
                 DateTo = DatePikerTo.SelectedDate,
                 UserId = App.Worker.Id
-            });*/
+            });
             form.ShowDialog();
         }
     }

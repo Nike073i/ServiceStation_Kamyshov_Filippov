@@ -2,6 +2,7 @@
 using ServiceStationBusinessLogic.HelperModels;
 using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,7 +65,8 @@ namespace ServiceStationBusinessLogic.BusinessLogic
              var serviceRecordings = serviceRecordingStorage.GetFilteredList(new ServiceRecordingBindingModel
              {
                  DateFrom = model.DateFrom,
-                 DateTo = model.DateTo
+                 DateTo = model.DateTo,
+                 UserId = model.UserId
              });
 
              var tMSPCar = new List<ReportTechnicalMaintenancesCarsSparePartsViewModel>();
@@ -109,6 +111,58 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                  });
              });
             return tMSPCar;
+        }
+
+        public ReportInfoesWorker GetTechnicalMaintenance(ReportWorkerBindingModel model)
+        {
+            var serviceRecordings = serviceRecordingStorage.GetFilteredList(new ServiceRecordingBindingModel
+            {
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo
+            });
+
+            var tMSPCar = new List<ReportTechnicalMaintenancesCarsSparePartsViewModel>();
+            serviceRecordings.ToList().ForEach(serviceRecording =>
+            {
+                var tm = technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
+                {
+                    Id = serviceRecording.TechnicalMaintenanceId
+                });
+                var car = carStorage.GetElement(new CarBindingModel
+                {
+                    Id = serviceRecording.CarId
+                });
+                var sparePartsDict = new Dictionary<int, string>();
+                tm.TechnicalMaintenanceWorks.ToList().ForEach(work =>
+                {
+                    var view = workStorage.GetElement(new WorkBindingModel
+                    {
+                        Id = work.Key
+                    });
+                    if (view != null)
+                    {
+                        view.WorkSpareParts.ToList().ForEach(sparePart =>
+                        {
+                            if (!sparePartsDict.ContainsKey(sparePart.Key))
+                            {
+                                sparePartsDict.Add(sparePart.Key, sparePart.Value.Item1);
+                            }
+                        });
+                    }
+                });
+                sparePartsDict.ToList().Where(sP => car.CarSpareParts.Any(spC => spC.Key.Equals(sP.Key)))
+                .ToList().ForEach(tmsp =>
+                {
+                    tMSPCar.Add(new ReportTechnicalMaintenancesCarsSparePartsViewModel
+                    {
+                        TechnicalMaintenanceName = tm.TechnicalMaintenanceName,
+                        DatePassed = serviceRecording.DatePassed,
+                        CarName = car.CarName,
+                        SparePart = tmsp.Value
+                    });
+                });
+            });
+            return null;
         }
 
         public void SaveTechnicalMaintenanceSparePartsToWordFile(ReportWorkerBindingModel model)

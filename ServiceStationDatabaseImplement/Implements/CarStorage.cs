@@ -14,7 +14,7 @@ namespace ServiceStationDatabaseImplement.Implements
         public Car CreateModel(CarBindingModel model, Car car, ServiceStationDatabase context)
         {
             car.CarName = model.CarName;
-            car.UserId = model.UserId;
+            car.UserId = (int) model.UserId;
             if (car.Id == 0)
             {
                 context.Cars.Add(car);
@@ -88,7 +88,7 @@ namespace ServiceStationDatabaseImplement.Implements
                 return context.Cars.Include(rec => rec.CarSpareParts)
                     .ThenInclude(rec => rec.SparePart)
                     .Include(rec => rec.User)
-                    .Where(rec => rec.CarName.Contains(model.CarName))
+                    .Where(rec => rec.CarName.Contains(model.CarName) || (model.UserId.HasValue && rec.UserId == model.UserId))
                     .ToList()
                     .Select(rec => new CarViewModel
                     {

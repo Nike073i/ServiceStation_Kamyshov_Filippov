@@ -31,7 +31,7 @@ namespace ServiceStationWorkerView
         {
             try
             {
-                var list = logic.Read(null);
+                var list = logic.Read(new ServiceRecordingBindingModel { UserId = App.Worker.Id });
                 if (list != null)
                 {
                     dataGridServiceRecordings.ItemsSource = list;

@@ -15,7 +15,7 @@ namespace ServiceStationDatabaseImplement.Implements
         {
             technicalMaintenance.TechnicalMaintenanceName = model.TechnicalMaintenanceName;
             technicalMaintenance.Sum = model.Sum;
-            technicalMaintenance.UserId = model.UserId;
+            technicalMaintenance.UserId = (int) model.UserId;
             if (technicalMaintenance.Id == 0)
             {
                 context.TechnicalMaintenances.Add(technicalMaintenance);
@@ -123,7 +123,8 @@ namespace ServiceStationDatabaseImplement.Implements
                     .ThenInclude(rec => rec.Car)
                     .Include(rec => rec.User)
                     .Where(rec => rec.TechnicalMaintenanceName.Contains(model.TechnicalMaintenanceName)
-                    || (model.SelectedWorks != null && (rec.TechnicalMaintenanceWorks.Any(recTMW => model.SelectedWorks.Contains(recTMW.WorkId)))))
+                    || (model.UserId.HasValue && rec.UserId == model.UserId)
+                    || (model.SelectedWorks != null && rec.TechnicalMaintenanceWorks.Any(recTMW => model.SelectedWorks.Contains(recTMW.WorkId))))
                     .ToList()
                     .Select(rec => new TechnicalMaintenanceViewModel
                     {
@@ -190,7 +191,8 @@ namespace ServiceStationDatabaseImplement.Implements
                     try
                     {
                         var technicalMaintenance = context.TechnicalMaintenances
-                            .FirstOrDefault(rec => rec.Id == model.Id || rec.TechnicalMaintenanceName == model.TechnicalMaintenanceName);
+                            .FirstOrDefault(rec => rec.Id == model.Id || rec.TechnicalMaintenanceName == model.TechnicalMaintenanceName 
+                            || (model.UserId.HasValue && rec.UserId == model.UserId));
                         if (technicalMaintenance == null)
                         {
                             throw new Exception("ТО не найдено");
