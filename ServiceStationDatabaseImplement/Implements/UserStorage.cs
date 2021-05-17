@@ -54,7 +54,7 @@ namespace ServiceStationDatabaseImplement.Implements
             using (var context = new ServiceStationDatabase())
             {
                 var user = context.Users
-                .FirstOrDefault(rec => rec.Id == model.Id);
+                .FirstOrDefault(rec => rec.Id == model.Id || rec.Email == model.Email);
                 return user != null ?
                 new UserViewModel
                 {
