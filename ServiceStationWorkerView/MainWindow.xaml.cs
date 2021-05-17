@@ -47,7 +47,7 @@ namespace ServiceStationWorkerView
         }
         private void ButtonSparePartsList_Click(object sender, RoutedEventArgs e)
         {
-            var form = Container.Resolve<SparePartsListWindow>();
+            var form = Container.Resolve<SparePartListWindow>();
             form.ShowDialog();
         }
     }

@@ -3,8 +3,7 @@ using ServiceStationBusinessLogic.HelperModels;
 using ServiceStationBusinessLogic.Interfaces;
 using ServiceStationBusinessLogic.ViewModels;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
+using System.Linq;
 
 namespace ServiceStationBusinessLogic.BusinessLogic
 {
@@ -25,62 +24,10 @@ namespace ServiceStationBusinessLogic.BusinessLogic
         private List<ReportTechnicalMaintenanceSparePartsViewModel> GetTechnicalMaintenanceSpareParts(List<TechnicalMaintenanceViewModel> selectedTMS)
         { 
             var record = new List<ReportTechnicalMaintenanceSparePartsViewModel>();
-            foreach (var tm in selectedTMS)
+            selectedTMS.ForEach(tm =>
             {
                 var sparePartsDict = new Dictionary<int, (string, int)>();
-               foreach(var work in tm.TechnicalMaintenanceWorks)
-               {
-                    var view = workStorage.GetElement(new WorkBindingModel
-                    {
-                        Id = work.Key
-                    });
-                    if(view != null)
-                    {
-                        foreach(var sparePart in view.WorkSpareParts)
-                        {
-                            if (sparePartsDict.ContainsKey(sparePart.Key))
-                            {
-                                int currentCount = sparePartsDict[sparePart.Key].Item2;
-                                currentCount += sparePart.Value.Item2*work.Value.Item2;
-                                sparePartsDict[sparePart.Key] = (sparePart.Value.Item1, currentCount);
-                            }
-                            else 
-                            {
-                                sparePartsDict.Add(sparePart.Key,(sparePart.Value.Item1, sparePart.Value.Item2*work.Value.Item2));
-                            }
-                        }
-                    }
-               }
-                record.Add(new ReportTechnicalMaintenanceSparePartsViewModel
-                {
-                    TechnicalMaintenanceName = tm.TechnicalMaintenanceName,
-                    SpareParts = sparePartsDict
-                });
-            }
-            return record;
-        }
-
-        public List<ReportTechnicalMaintenancesCarsSparePartsViewModel> GetSparePartTechnicalMaintenanceCar(ReportWorkerBindingModel model)
-        {
-            var serviceRecordings = serviceRecordingStorage.GetFilteredList(new ServiceRecordingBindingModel
-            {
-                DateFrom = model.DateFrom,
-                DateTo = model.DateTo
-            });
-
-            var tMSPCar = new List<ReportTechnicalMaintenancesCarsSparePartsViewModel>();
-            foreach (var serviceRecording in serviceRecordings)
-            {
-                var tm = technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
-                {
-                    Id = serviceRecording.TechnicalMaintenanceId
-                });
-                var car = carStorage.GetElement(new CarBindingModel
-                {
-                    Id = serviceRecording.CarId
-                });
-                var sparePartsDict = new Dictionary<int, string>();
-                foreach (var work in tm.TechnicalMaintenanceWorks)
+                tm.TechnicalMaintenanceWorks.ToList().ForEach(work =>
                 {
                     var view = workStorage.GetElement(new WorkBindingModel
                     {
@@ -88,32 +35,79 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                     });
                     if (view != null)
                     {
-                        foreach (var sparePart in view.WorkSpareParts)
+                        view.WorkSpareParts.ToList().ForEach(sparePart =>
                         {
-                            if (!sparePartsDict.ContainsKey(sparePart.Key))
+                            if (sparePartsDict.ContainsKey(sparePart.Key))
                             {
-                               sparePartsDict.Add(sparePart.Key, sparePart.Value.Item1);
+                                int currentCount = sparePartsDict[sparePart.Key].Item2;
+                                currentCount += sparePart.Value.Item2 * work.Value.Item2;
+                                sparePartsDict[sparePart.Key] = (sparePart.Value.Item1, currentCount);
                             }
-                        }
-                    }
-                }
-                foreach(var sparePart in sparePartsDict)
-                {
-                    foreach(var sparePartCar in car.CarSpareParts)
-                    {
-                        if(sparePart.Key == sparePartCar.Key)
-                        {
-                            tMSPCar.Add(new ReportTechnicalMaintenancesCarsSparePartsViewModel
+                            else
                             {
-                                TechnicalMaintenanceName = tm.TechnicalMaintenanceName,
-                                DatePassed = serviceRecording.DatePassed,
-                                CarName = car.CarName,
-                                SparePart = sparePart.Value
-                            });
-                        }
+                                sparePartsDict.Add(sparePart.Key, (sparePart.Value.Item1, sparePart.Value.Item2 * work.Value.Item2));
+                            }
+                        });
                     }
-                }
-            }
+                });
+                record.Add(new ReportTechnicalMaintenanceSparePartsViewModel
+                {
+                    TechnicalMaintenanceName = tm.TechnicalMaintenanceName,
+                    SpareParts = sparePartsDict
+                });
+            });
+            return record;
+        }
+
+        public List<ReportTechnicalMaintenancesCarsSparePartsViewModel> GetSparePartTechnicalMaintenanceCar(ReportWorkerBindingModel model)
+        {
+             var serviceRecordings = serviceRecordingStorage.GetFilteredList(new ServiceRecordingBindingModel
+             {
+                 DateFrom = model.DateFrom,
+                 DateTo = model.DateTo
+             });
+
+             var tMSPCar = new List<ReportTechnicalMaintenancesCarsSparePartsViewModel>();
+             serviceRecordings.ToList().ForEach(serviceRecording =>
+             {
+                 var tm = technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
+                 {
+                     Id = serviceRecording.TechnicalMaintenanceId
+                 });
+                 var car = carStorage.GetElement(new CarBindingModel
+                 {
+                     Id = serviceRecording.CarId
+                 });
+                 var sparePartsDict = new Dictionary<int, string>();
+                 tm.TechnicalMaintenanceWorks.ToList().ForEach(work =>
+                 {
+                     var view = workStorage.GetElement(new WorkBindingModel
+                     {
+                         Id = work.Key
+                     });
+                     if (view != null)
+                     {
+                         view.WorkSpareParts.ToList().ForEach(sparePart =>
+                         {
+                             if (!sparePartsDict.ContainsKey(sparePart.Key))
+                             {
+                                 sparePartsDict.Add(sparePart.Key, sparePart.Value.Item1);
+                             }
+                         });
+                     }
+                 });
+                 sparePartsDict.ToList().Where(sP => car.CarSpareParts.Any(spC => spC.Key.Equals(sP.Key)))
+                 .ToList().ForEach(tmsp =>
+                 {
+                     tMSPCar.Add(new ReportTechnicalMaintenancesCarsSparePartsViewModel
+                     {
+                         TechnicalMaintenanceName = tm.TechnicalMaintenanceName,
+                         DatePassed = serviceRecording.DatePassed,
+                         CarName = car.CarName,
+                         SparePart = tmsp.Value
+                     });
+                 });
+             });
             return tMSPCar;
         }
 
