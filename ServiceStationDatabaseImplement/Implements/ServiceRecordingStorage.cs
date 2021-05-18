@@ -59,10 +59,12 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Include(rec => rec.User)
                     .Include(rec => rec.TechnicalMaintenance)
                     .Include(rec => rec.Car)
-                    .Where(rec => (model.UserId.HasValue && rec.UserId == model.UserId && model.DateFrom.HasValue && model.DateTo.HasValue &&
-                    model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed) || 
-                    (model.UserId.HasValue && rec.UserId == model.UserId) ||
-                    (model.ReportStorekeeper.HasValue && model.ReportStorekeeper.Value && model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed))
+                    .Where(rec =>
+                    (model.ReportStorekeeper.HasValue && model.ReportStorekeeper.Value && model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed) 
+                    ||
+                    (model.ReportWorker.HasValue && model.ReportWorker.Value && model.UserId.HasValue && rec.UserId == model.UserId) 
+                    ||
+                    (model.UserId.HasValue && rec.UserId == model.UserId))
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,

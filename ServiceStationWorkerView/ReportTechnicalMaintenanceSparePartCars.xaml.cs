@@ -143,24 +143,9 @@ namespace ServiceStationWorkerView
         }
         private void ButtonCharts_Click(object sender, RoutedEventArgs e)
         {
-            if (DatePikerTo.SelectedDate == null || DatePikerFrom.SelectedDate == null)
-            {
-                MessageBox.Show("Выберите даты", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                logger.Warn("Не выбраны даты для отчета");
-                return;
-            }
-
-            if (DatePikerFrom.SelectedDate >= DatePikerTo.SelectedDate)
-            {
-                MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                logger.Warn("Выбранная дата начала больше, чем дата окончания");
-                return;
-            }
             var form = Container.Resolve<ChartsWindow>();
             form.reportInfoes = logic.GetTechnicalMaintenance(new ReportWorkerBindingModel
             {
-                DateFrom = DatePikerFrom.SelectedDate,
-                DateTo = DatePikerTo.SelectedDate,
                 UserId = App.Worker.Id
             });
             form.ShowDialog();

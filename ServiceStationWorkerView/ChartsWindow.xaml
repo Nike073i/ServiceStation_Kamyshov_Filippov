@@ -16,7 +16,7 @@
         <DVC:Chart  x:Name="FrequentlyPassedChart" Background="#FF9B9B9B" Height="350" Margin="10,5">
             <DVC:PieSeries IndependentValueBinding="{Binding Item1}" DependentValueBinding="{Binding Item2}" AnimationSequence="FirstToLast"/>
         </DVC:Chart>
-        <Label HorizontalAlignment="Center" FontSize="14" FontFamily="{StaticResource General_fontFamily}" Margin="10,5" Content="Помесечная посещаемость"/>
+        <Label HorizontalAlignment="Center" FontSize="14" FontFamily="{StaticResource General_fontFamily}" Margin="10,5" Content="Помесечная проходимость ТО"/>
         <DVC:Chart x:Name="CountByMounthChart" Height="350" Background="#FF9B9B9B" VerticalAlignment="Center" Margin="10,5,10,0">
             <DVC:ColumnSeries Title="Кол-во посетителей" IndependentValueBinding="{Binding Item1}" DependentValueBinding="{Binding Item2}"/>
         </DVC:Chart>
