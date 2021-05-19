@@ -191,8 +191,7 @@ namespace ServiceStationDatabaseImplement.Implements
                     try
                     {
                         var technicalMaintenance = context.TechnicalMaintenances
-                            .FirstOrDefault(rec => rec.Id == model.Id || rec.TechnicalMaintenanceName == model.TechnicalMaintenanceName 
-                            || (model.UserId.HasValue && rec.UserId == model.UserId));
+                            .FirstOrDefault(rec => rec.Id == model.Id || rec.TechnicalMaintenanceName == model.TechnicalMaintenanceName);
                         if (technicalMaintenance == null)
                         {
                             throw new Exception("ТО не найдено");

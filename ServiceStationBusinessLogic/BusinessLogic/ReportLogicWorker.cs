@@ -71,7 +71,7 @@ namespace ServiceStationBusinessLogic.BusinessLogic
              });
 
              var tMSPCar = new List<ReportTechnicalMaintenancesCarsSparePartsViewModel>();
-             serviceRecordings.ToList().ForEach(serviceRecording =>
+             serviceRecordings.ForEach(serviceRecording =>
              {
                  var tm = technicalMaintenanceStorage.GetElement(new TechnicalMaintenanceBindingModel
                  {
@@ -111,7 +111,12 @@ namespace ServiceStationBusinessLogic.BusinessLogic
                      });
                  });
              });
-            return tMSPCar;
+            return tMSPCar
+                .OrderBy(rec => rec.DatePassed)
+                .ThenBy(rec => rec.TechnicalMaintenanceName)
+                .ThenBy(rec => rec.CarName)
+                .ThenBy(rec => rec.SparePart)
+                .ToList();
         }
 
         public ReportInfoesWorker GetTechnicalMaintenance(ReportWorkerBindingModel model)

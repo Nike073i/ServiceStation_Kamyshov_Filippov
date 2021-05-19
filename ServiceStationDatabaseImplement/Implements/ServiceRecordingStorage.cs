@@ -36,6 +36,7 @@ namespace ServiceStationDatabaseImplement.Implements
                 new ServiceRecordingViewModel
                 {
                     Id = serviceRecording.Id,
+                    DatePassedString = serviceRecording.DatePassed.ToLongDateString(),
                     DatePassed = serviceRecording.DatePassed,
                     CarId = serviceRecording.CarId,
                     CarName = serviceRecording.Car.CarName,
@@ -68,6 +69,7 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,
+                        DatePassedString = rec.DatePassed.ToLongDateString(),
                         DatePassed = rec.DatePassed,
                         CarId = rec.CarId,
                         CarName = rec.Car.CarName,
@@ -90,6 +92,7 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,
+                        DatePassedString = rec.DatePassed.ToLongDateString(),
                         DatePassed = rec.DatePassed,
                         CarId = rec.CarId,
                         CarName = rec.Car.CarName,

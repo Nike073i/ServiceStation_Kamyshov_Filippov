@@ -18,7 +18,7 @@
         <DataGrid x:Name="dataGridServiceRecordings" Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="false">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Hidden" Binding="{Binding Path=Id}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата прохождения" Binding="{Binding Path=DatePassed}" Width="0.8*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата прохождения" Binding="{Binding Path=DatePassedString}" Width="0.8*"></DataGridTextColumn>
                 <DataGridTextColumn Header="Машина" Binding="{Binding Path=CarName}" Width="0.5*"></DataGridTextColumn>
                 <DataGridTextColumn Header="ТО" Binding="{Binding Path=TechnicalMaintenanceName}" Width="0.5*"></DataGridTextColumn>
                 <DataGridTextColumn Header="ФИО работника" Binding="{Binding Path=UserFIO}" Width="*"></DataGridTextColumn>
