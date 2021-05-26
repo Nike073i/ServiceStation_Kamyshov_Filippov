@@ -13,5 +13,6 @@ namespace ServiceStationBusinessLogic.BindingModels
         public DateTime? DateTo { get; set; }
         public bool? ReportStorekeeper { get; set; }
         public bool? ReportWorker { get; set; }
+        public bool? UsersRec { get; set; }
     }
 }

@@ -146,6 +146,8 @@ namespace ServiceStationWorkerView
             var form = Container.Resolve<ChartsWindow>();
             form.reportInfoes = logic.GetTechnicalMaintenance(new ReportWorkerBindingModel
             {
+                DateFrom = DatePikerFrom.SelectedDate,
+                DateTo = DatePikerTo.SelectedDate,
                 UserId = App.Worker.Id
             });
             form.ShowDialog();

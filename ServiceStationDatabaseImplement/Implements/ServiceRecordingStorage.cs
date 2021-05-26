@@ -36,6 +36,7 @@ namespace ServiceStationDatabaseImplement.Implements
                 new ServiceRecordingViewModel
                 {
                     Id = serviceRecording.Id,
+                    DatePassedString = serviceRecording.DatePassed.ToLongDateString(),
                     DatePassed = serviceRecording.DatePassed,
                     CarId = serviceRecording.CarId,
                     CarName = serviceRecording.Car.CarName,
@@ -62,12 +63,13 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Where(rec =>
                     (model.ReportStorekeeper.HasValue && model.ReportStorekeeper.Value && model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed) 
                     ||
-                    (model.ReportWorker.HasValue && model.ReportWorker.Value && model.UserId.HasValue && rec.UserId == model.UserId) 
+                    (model.ReportWorker.HasValue && model.ReportWorker.Value && model.UserId.HasValue && rec.UserId == model.UserId && model.DateFrom <= rec.DatePassed && model.DateTo >= rec.DatePassed) 
                     ||
-                    (model.UserId.HasValue && rec.UserId == model.UserId))
+                    (model.UsersRec.HasValue && model.UsersRec.Value && model.UserId.HasValue && rec.UserId == model.UserId))
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,
+                        DatePassedString = rec.DatePassed.ToLongDateString(),
                         DatePassed = rec.DatePassed,
                         CarId = rec.CarId,
                         CarName = rec.Car.CarName,
@@ -90,6 +92,7 @@ namespace ServiceStationDatabaseImplement.Implements
                     .Select(rec => new ServiceRecordingViewModel
                     {
                         Id = rec.Id,
+                        DatePassedString = rec.DatePassed.ToLongDateString(),
                         DatePassed = rec.DatePassed,
                         CarId = rec.CarId,
                         CarName = rec.Car.CarName,

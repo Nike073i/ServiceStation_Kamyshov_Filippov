@@ -6,9 +6,9 @@ namespace ServiceStationBusinessLogic.ViewModels
     public class ServiceRecordingViewModel
     {
         public int Id { get; set; }
-
-        [DisplayName("Дата прохождения")]
         public DateTime DatePassed { get; set; }
+        [DisplayName("Дата прохождения")]
+        public string DatePassedString { get; set; }
         public int UserId { get; set; }
 
         [DisplayName("ФИО работника")]
