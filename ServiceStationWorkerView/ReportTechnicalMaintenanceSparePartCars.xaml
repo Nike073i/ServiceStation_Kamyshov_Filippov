@@ -22,9 +22,9 @@
         <TextBlock HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}">Список пройденных ТО</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center">c</Label>
-            <Label x:Name="textBoxDateFrom" HorizontalAlignment="Center" Width="100" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center"></Label>
+            <Label x:Name="textBoxDateFrom" HorizontalAlignment="Center" Width="150" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center"></Label>
             <Label HorizontalAlignment="Center" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center" >по</Label>
-            <Label x:Name="textBoxDateTo" HorizontalAlignment="Center" Width="100" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center"></Label>
+            <Label x:Name="textBoxDateTo" HorizontalAlignment="Center" Width="150" FontFamily="{StaticResource General_fontFamily}" HorizontalContentAlignment="Center"></Label>
         </StackPanel>
         <DataGrid x:Name="dataGridTechnicalMaintenanceSparePartCars" AutoGenerateColumns="False" CanUserAddRows="false" Margin="10" Height="310">
             <DataGrid.Columns>
